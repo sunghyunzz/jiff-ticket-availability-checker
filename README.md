@@ -23,3 +23,14 @@ $ python -m jiff 436 2018-05-07
 ```
 
 Output format is `<{TITLE}>({CODE}): {NR_OF_AVAILABLE_SEATS} / {NR_OF_TOTAL_SEATS}`.
+
+## Slack Integration
+
+You can make the application to send Slack message when at least one seat is available. What you need to do is just get Slack incoming webhook URL and let the application know it.
+
+```
+$ python -m jiff [SCHEDULE_CODE] [SCHEDULE_DATE] --slack-url [SLACK_URL] --slack-channel [SLACK_CHANNEL]
+```
+
+- `SLACK_URL`: your Slack incoming webhook URL.
+- `SLACK_CHANNEL`: your Slack channel for messages.
