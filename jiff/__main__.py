@@ -3,8 +3,8 @@ from typing import Optional
 
 import click
 
-from jiff import get_nr_of_seats, get_schedule
-from jiff.slack import send_msg
+from . import get_nr_of_seats, get_schedule
+from .slack import send_msg
 
 
 def handle_slack(
