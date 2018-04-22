@@ -7,6 +7,27 @@ from jiff import get_nr_of_seats, get_schedule
 from jiff.slack import send_msg
 
 
+def handle_slack(
+    slack_url: Optional[str],
+    slack_channel: Optional[str],
+    msg: str
+) -> None:
+    if slack_url and slack_channel:
+        sent = send_msg(
+            slack_url,
+            slack_channel,
+            msg
+        )
+        if sent:
+            click.echo('Just sent Slack message!')
+        else:
+            click.echo('Sending Slack message failed!')
+    elif slack_url and not slack_channel:
+        click.echo('Slack URL is provided but channel is not given.')
+    elif not slack_url and slack_channel:
+        click.echo('Slack channel is provided but URL is not given.')
+
+
 @click.command()
 @click.argument('code')
 @click.argument('date')
@@ -29,20 +50,8 @@ def fetch(
             msg = f'<{sch.title}>({code}): {left} / {total}'
 
             click.echo(msg)
-            if slack_url and slack_channel:
-                sent = send_msg(
-                    slack_url,
-                    slack_channel,
-                    msg
-                )
-                if sent:
-                    click.echo('Just sent Slack message!')
-                else:
-                    click.echo('Sending Slack message failed!')
-            elif slack_url and not slack_channel:
-                click.echo('Slack URL is provided but channel is not given.')
-            elif not slack_url and slack_channel:
-                click.echo('Slack channel is provided but URL is not given.')
+            if left > 0:
+                handle_slack(slack_url, slack_channel, msg)
         else:
             click.echo('Schedule code or date are incorrect.')
     except ValueError:
